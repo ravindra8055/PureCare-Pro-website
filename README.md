@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: Purecare Pro
 emoji: 🌖
@@ -5,9 +6,10 @@ colorFrom: yellow
 colorTo: yellow
 sdk: docker
 pinned: false
-app_port: 7860
 ---
 
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+=======
 <div align="center">
 
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
@@ -19,3 +21,4 @@ app_port: 7860
   <a href="https://aistudio.google.com/apps">Start building</a>
 
 </div>
+>>>>>>> 08c1e90 (Initial commit)

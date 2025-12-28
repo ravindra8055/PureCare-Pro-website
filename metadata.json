@@ -1,0 +1,7 @@
+{
+  "name": "PureCare Pro SEO - Cleaning Services CMS",
+  "description": "A high-performance, SEO-optimized cleaning company website with programmatic area-page generation and structured data implementation.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

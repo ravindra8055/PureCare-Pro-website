@@ -1,0 +1,63 @@
+
+import React from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { AREAS, SERVICES, COMPANY_NAME, PRIMARY_CITY } from '../constants';
+import SEOHead from '../components/SEOHead';
+
+const AreaDirectory: React.FC = () => {
+  const { areaSlug } = useParams();
+  const area = AREAS.find(a => a.slug === areaSlug);
+
+  if (!area) return <div className="p-32 text-center text-2xl font-bold dark:text-white">Area not found</div>;
+
+  const seoData = {
+    title: `Best Cleaning Services in ${area.name} | Expert ${COMPANY_NAME}`,
+    description: `Top-rated professional cleaning services in ${area.name}, Bangalore. Tank cleaning, STP maintenance, and Deep cleaning. Book now for reliable service near ${area.landmarks[0]}.`,
+    canonical: `https://purecarepro.com/areas/${area.slug}`
+  };
+
+  return (
+    <div className="min-h-screen bg-background-light dark:bg-background-dark pt-20">
+      <SEOHead data={seoData} />
+      
+      {/* Area Hero - Updated to match ServicePage style (Clean & Theme Aware) */}
+      <div className="relative py-32 bg-background-light dark:bg-black border-b border-gray-200 dark:border-gray-800 overflow-hidden bg-grid-pattern">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+          <span className="inline-block py-1 px-3 border border-blue-500 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-6 rounded-full backdrop-blur-sm">
+            Regional Hub
+          </span>
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 text-gray-900 dark:text-white tracking-tight">{area.name}</h1>
+          <p className="text-gray-600 dark:text-gray-300 text-xl max-w-2xl mx-auto leading-relaxed">
+            Premium cleaning solutions deployed for residents near <span className="text-blue-600 dark:text-blue-400 font-semibold">{area.landmarks.join(', ')}</span>.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 -mt-12 relative z-20 pb-32">
+        <div className="grid md:grid-cols-3 gap-8">
+           {SERVICES.map(s => (
+             <Link 
+               key={s.id} 
+               to={`/${s.slug}-in-${area.slug}-${PRIMARY_CITY.toLowerCase()}`}
+               className="group bg-white dark:bg-surface-dark p-10 border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl"
+             >
+                <div className="flex justify-between items-start mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{s.name}</h3>
+                  <span className="text-gray-400 dark:text-gray-600 group-hover:text-blue-600 dark:group-hover:text-blue-400">↗</span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">Tailored {s.name.toLowerCase()} for the {area.name} ecosystem.</p>
+                <span className="inline-block border-b border-gray-300 dark:border-gray-700 pb-1 text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white group-hover:border-blue-500 transition-colors">
+                  View Pricing
+                </span>
+             </Link>
+           ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AreaDirectory;

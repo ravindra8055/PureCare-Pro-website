@@ -2,12 +2,12 @@
 import React from 'react';
 import { ServiceInfo, AreaInfo, Client } from './types';
 
-export const COMPANY_NAME = "PureCare Pro";
+export const COMPANY_NAME = "Hygienic Cleaning Services";
 export const PRIMARY_CITY = "Bangalore";
 export const PHONE_NUMBER = "+91 99866 55556";
 export const PHONE_NUMBER_2 = "+91 97395 60560";
 export const WHATSAPP_NUMBER = "919986655556";
-export const EMAIL = "contact@purecarepro.com";
+export const EMAIL = "contact@hygieniccleaning.com";
 
 export const ADDRESS = "207, 4th Cross, 2nd Main, 2nd Stage, Nagarabhavi, Bangalore, Karnataka, 560072";
 export const ADDRESS_OBJ = {
@@ -88,7 +88,7 @@ export const SERVICES: ServiceInfo[] = [
     slug: "water-tank-cleaning",
     name: "Water Tank Cleaning Services",
     // Clean, crystal clear blue water texture to symbolize the result
-    image: "https://images.unsplash.com/photo-1606041011872-596597980b96?auto=format&fit=crop&q=80",
+    image: "images/water-tank-cleaning.jpg",
     shortDesc: "Professional mechanical and chemical cleaning of water storage systems for safe, bacteria-free water.",
     longDesc: "Contaminated water tanks are breeding grounds for bacteria, viruses, and algae. Our advanced cleaning process removes sludge and disinfects your storage system thoroughly. Whether you require clean, bacteria-free water for your home, business, residential society, hotel, or industrial building, we can provide it for you.",
     benefits: [
@@ -125,41 +125,41 @@ export const SERVICES: ServiceInfo[] = [
       "Our team should not be asked to fill water after the service is done."
     ],
     faqs: [
-      { 
-        question: "Why is regular water tank cleaning critical?", 
-        answer: "Standing water in overhead tanks often becomes a breeding ground for algae, silt, and harmful bacteria over time. Regular professional cleaning by PureCare Pro ensures that the water your family uses for drinking, cooking, and bathing is pathogen-free, significantly reducing the risk of waterborne diseases." 
+      {
+        question: "Why is regular water tank cleaning critical?",
+        answer: `Standing water in overhead tanks often becomes a breeding ground for algae, silt, and harmful bacteria over time. Regular professional cleaning by ${COMPANY_NAME} ensures that the water your family uses for drinking, cooking, and bathing is pathogen-free, significantly reducing the risk of waterborne diseases.`
       },
-      { 
-        question: "How often does PureCare Pro recommend cleaning?", 
-        answer: "For most residential properties in Bangalore, we recommend a thorough deep cleaning every 6 months. For commercial buildings, hotels, or older properties with galvanized iron tanks, a quarterly schedule (every 3 months) is advisable to maintain optimal water quality." 
+      {
+        question: `How often does ${COMPANY_NAME} recommend cleaning?`,
+        answer: "For most residential properties in Bangalore, we recommend a thorough deep cleaning every 6 months. For commercial buildings, hotels, or older properties with galvanized iron tanks, a quarterly schedule (every 3 months) is advisable to maintain optimal water quality."
       },
-      { 
-        question: "Is the disinfectant used safe for drinking water?", 
-        answer: "Absolutely. We strictly use industrial-grade, eco-friendly, and food-safe disinfectants that are approved for use in potable water storage. Our rigorous 6-step process involves thorough rinsing, ensuring no chemical residue remains, making the water perfectly safe for consumption immediately after refilling." 
+      {
+        question: "Is the disinfectant used safe for drinking water?",
+        answer: "Absolutely. We strictly use industrial-grade, eco-friendly, and food-safe disinfectants that are approved for use in potable water storage. Our rigorous 6-step process involves thorough rinsing, ensuring no chemical residue remains, making the water perfectly safe for consumption immediately after refilling."
       },
-      { 
-        question: "Do you clean both underground sumps and overhead tanks?", 
-        answer: "Yes, we are fully equipped to handle both. In fact, we highly recommend cleaning your underground sump and overhead tank on the same day. Since the sump feeds the overhead tank, cleaning both ensures the entire water supply chain in your property is sanitized." 
+      {
+        question: "Do you clean both underground sumps and overhead tanks?",
+        answer: "Yes, we are fully equipped to handle both. In fact, we highly recommend cleaning your underground sump and overhead tank on the same day. Since the sump feeds the overhead tank, cleaning both ensures the entire water supply chain in your property is sanitized."
       },
-      { 
-        question: "How much time does the service take?", 
-        answer: "For a standard residential setup (1000L - 5000L), the entire process typically takes between 2 to 4 hours. This duration can vary based on the tank's accessibility, the amount of sludge accumulation, and whether dewatering is required." 
+      {
+        question: "How much time does the service take?",
+        answer: "For a standard residential setup (1000L - 5000L), the entire process typically takes between 2 to 4 hours. This duration can vary based on the tank's accessibility, the amount of sludge accumulation, and whether dewatering is required."
       },
-      { 
-        question: "Do I need to empty the tank before you arrive?", 
-        answer: "It is helpful if you can minimize the water level to avoid wastage, but it is not mandatory. Our team carries high-speed dewatering pumps to drain the tank quickly before starting the cleaning process." 
+      {
+        question: "Do I need to empty the tank before you arrive?",
+        answer: "It is helpful if you can minimize the water level to avoid wastage, but it is not mandatory. Our team carries high-speed dewatering pumps to drain the tank quickly before starting the cleaning process."
       },
-      { 
-        question: "Do you offer Annual Maintenance Contracts (AMC)?", 
-        answer: `Yes, PureCare Pro offers cost-effective AMC packages for apartments, societies, and corporate offices. This includes scheduled visits 3-4 times a year at discounted rates, ensuring you never have to worry about tracking your cleaning schedule.` 
+      {
+        question: "Do you offer Annual Maintenance Contracts (AMC)?",
+        answer: `Yes, ${COMPANY_NAME} offers cost-effective AMC packages for apartments, societies, and corporate offices. This includes scheduled visits 3-4 times a year at discounted rates, ensuring you never have to worry about tracking your cleaning schedule.`
       },
-      { 
-        question: "Are your technicians trained and insured?", 
-        answer: `Safety is our priority. All PureCare Pro technicians undergo rigorous background checks and technical training. They follow strict safety protocols, especially when entering confined spaces like underground sumps, and use safety harnesses and oxygen monitoring where necessary.` 
+      {
+        question: "Are your technicians trained and insured?",
+        answer: `Safety is our priority. All ${COMPANY_NAME} technicians undergo rigorous background checks and technical training. They follow strict safety protocols, especially when entering confined spaces like underground sumps, and use safety harnesses and oxygen monitoring where necessary.`
       },
-      { 
-        question: "What happens if I am not satisfied with the cleaning?", 
-        answer: "We offer a 100% satisfaction guarantee. After the cleaning is done, our supervisor will inspect the tank with you. If you spot any issues or missed spots, we will reclean it immediately before leaving your premises." 
+      {
+        question: "What happens if I am not satisfied with the cleaning?",
+        answer: "We offer a 100% satisfaction guarantee. After the cleaning is done, our supervisor will inspect the tank with you. If you spot any issues or missed spots, we will reclean it immediately before leaving your premises."
       }
     ],
     testimonials: [
@@ -177,7 +177,7 @@ export const SERVICES: ServiceInfo[] = [
     slug: "stp-cleaning-maintenance",
     name: "STP Cleaning & Maintenance",
     // Industrial piping/treatment plant - High contrast
-    image: "https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?auto=format&fit=crop&q=80",
+    image: "images/stp-cleaning.png",
     shortDesc: "End-to-end Sewage Treatment Plant operation, cleaning, and regulatory compliance services.",
     longDesc: "Effective sewage treatment is critical for environmental compliance and health. We provide expert maintenance for STPs in apartments, hotels, and industries using industry-grade tools.",
     benefits: [
@@ -278,7 +278,7 @@ export const SERVICES: ServiceInfo[] = [
     slug: "home-office-deep-cleaning",
     name: "Home and Office Deep Cleaning",
     // Pristine bright modern interior
-    image: "https://images.unsplash.com/photo-1584622024886-258ca5e4f58f?auto=format&fit=crop&q=80",
+    image: "images/deep-cleaning.png",
     shortDesc: "Intensive cleaning of every nook and corner using professional machinery and premium chemicals.",
     longDesc: "Standard cleaning often misses hidden dust and allergens. Our deep cleaning service targets tough stains, grout, and high-touch surfaces for a sanitized environment.",
     benefits: [

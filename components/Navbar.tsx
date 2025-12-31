@@ -20,10 +20,15 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Brand */}
           <Link to="/" className="flex items-center group">
-            <div className="w-10 h-10 bg-blue-600 rounded-sm mr-3 flex items-center justify-center text-white font-bold text-xl group-hover:rotate-12 transition-transform">P</div>
-            <span className="text-2xl font-extrabold tracking-tighter text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">
-              PURE<span className="font-light">CARE</span>
-            </span>
+            <img src="/images/logo.svg" alt="Hygienic Cleaning Logo" className="w-14 h-14 mr-2 group-hover:scale-110 transition-transform duration-300" />
+            <div className="flex flex-col -space-y-1">
+              <span className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">
+                Hygienic
+              </span>
+              <span className="text-sm font-medium tracking-wide text-gray-600 dark:text-gray-400">
+                cleaning services
+              </span>
+            </div>
           </Link>
 
           {/* Links */}
@@ -31,10 +36,10 @@ const Navbar: React.FC = () => {
             <Link to="/" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition">Home</Link>
             <Link to="/#services" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition">Services</Link>
             <Link to="/about" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition">About</Link>
-            
+
             {/* Theme Toggle */}
-            <button 
-              onClick={toggleTheme} 
+            <button
+              onClick={toggleTheme}
               className="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               aria-label="Toggle Theme"
             >
@@ -48,8 +53,8 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Menu Icon */}
           <div className="md:hidden flex items-center gap-4">
-             <button onClick={toggleTheme} className="text-xl">{theme === 'dark' ? '☀' : '☾'}</button>
-             <Link to="/contact" className="text-sm font-bold uppercase border-b-2 border-blue-600">Book</Link>
+            <button onClick={toggleTheme} className="text-xl">{theme === 'dark' ? '☀' : '☾'}</button>
+            <Link to="/contact" className="text-sm font-bold uppercase border-b-2 border-blue-600">Book</Link>
           </div>
         </div>
       </div>

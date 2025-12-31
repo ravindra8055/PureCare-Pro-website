@@ -1,123 +1,245 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SERVICES, AREAS, PRIMARY_CITY, COMPANY_NAME, PHONE_NUMBER, CLIENTS } from '../constants';
 import SEOHead from '../components/SEOHead';
 
 const Home: React.FC = () => {
-  // Select 4 random clients on component mount
-  const featuredClients = React.useMemo(() => {
-    return [...CLIENTS].sort(() => 0.5 - Math.random()).slice(0, 4);
-  }, []);
-
+  // SEO Data
   const seoData = {
     title: `${COMPANY_NAME} | Best Cleaning Services in ${PRIMARY_CITY} | Tank, STP & Deep Cleaning`,
-    description: `PureCare Pro offers professional Water Tank Cleaning, STP Maintenance, and Home Deep Cleaning in ${PRIMARY_CITY}. 25+ Years Experience. Trusted by 10k+ Clients. Book verified cleaners today.`,
+    description: `${COMPANY_NAME} offers professional Water Tank Cleaning, STP Maintenance, and Home Deep Cleaning in ${PRIMARY_CITY}. 25+ Years Experience. Trusted by 10k+ Clients.`,
     canonical: `https://purecarepro.com/`
   };
+
+  // Generic Features for the 6-Grid Section
+  const FEATURES = [
+    { title: "25+ Years Experience", desc: "Decades of expertise in industrial and residential cleaning.", icon: "🏆" },
+    { title: "Certified Staff", desc: "Background verified and technically trained professionals.", icon: "👨‍🔧" },
+    { title: "Eco-Friendly", desc: "100% safe, non-toxic, and biodegradable cleaning agents.", icon: "🌱" },
+    { title: "Advanced Tech", desc: "UV radiation, high-pressure pumps, and mechanized scrubbing.", icon: "⚙️" },
+    { title: "Satisfaction Guarantee", desc: "We don't leave until you are 100% happy with the result.", icon: "🤝" },
+    { title: "Affordable Pricing", desc: "Transparent quotes with no hidden charges.", icon: "🏷️" },
+  ];
+
+  // Aggregated FAQs
+  const FAQS = [
+    { q: "How often should I clean my water tank?", a: "We recommend cleaning residential tanks every 6 months and commercial tanks every 3 months." },
+    { q: "Do you serve all areas in Bangalore?", a: "Yes, we cover all major areas including Whitefield, Indiranagar, Jayanagar, and RR Nagar." },
+    { q: "Is the process safe for old tanks?", a: "Yes, our team inspects the tank structural integrity before proceeding with safe cleaning methods." },
+    { q: "How long does a deep clean take?", a: "A typical 3BHK deep cleaning takes about 6-8 hours with a team of 3-4 professionals." },
+  ];
+
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeFeature, setActiveFeature] = useState(0);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [activeArea, setActiveArea] = useState(0);
+
+  const featuresRef = React.useRef<HTMLDivElement>(null);
+  const testimonialsRef = React.useRef<HTMLDivElement>(null);
+  const areasRef = React.useRef<HTMLDivElement>(null);
+
+  // Marquee Logic (Duplicating clients for smooth loop)
+  const marqueeClients = [...CLIENTS, ...CLIENTS];
+
+  // Generic Scroll Handler
+  const handleScroll = (ref: React.RefObject<HTMLDivElement>, setIndex: (i: number) => void) => {
+    if (ref.current) {
+      const scrollLeft = ref.current.scrollLeft;
+      const itemWidth = ref.current.firstElementChild?.clientWidth || 0;
+      if (itemWidth > 0) {
+        const newIndex = Math.round(scrollLeft / itemWidth);
+        setIndex(newIndex);
+      }
+    }
+  };
+
+  const scrollContainer = (ref: React.RefObject<HTMLDivElement>, offset: number) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  };
+
+  // Helper to render dots
+  const renderDots = (total: number, active: number) => (
+    <div className="flex justify-center gap-2 mt-6 md:hidden">
+      {Array.from({ length: total }).map((_, i) => (
+        <div
+          key={i}
+          className={`h-2 w-2 rounded-full transition-all duration-300 ${active === i ? 'bg-gray-800 dark:bg-white w-4' : 'bg-gray-300 dark:bg-gray-700'}`}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <div className="overflow-hidden">
       <SEOHead data={seoData} />
-      
-      {/* 1. Hero Section: "CRED-like" Typography focus + Visuals */}
-      <section className="relative min-h-screen flex items-center pt-20 bg-grid-pattern">
-        {/* Background Gradient Blob */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] -z-10"></div>
-        
-        {/* Floating 3D Abstract Image for Desktop */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-2/3 hidden lg:block opacity-80 pointer-events-none -z-10">
-           <img 
-              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80" 
-              alt="Abstract Hygiene" 
-              className="w-full h-full object-cover rounded-l-3xl shadow-2xl shadow-blue-500/20 mask-image-gradient"
-              style={{ clipPath: 'polygon(20% 0%, 100% 0, 100% 100%, 0% 100%)' }}
-           />
-        </div>
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
-          <div className="max-w-5xl">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-[0.9] mb-12 text-gray-900 dark:text-white">
-              MASTER <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">HYGIENE.</span>
-            </h1>
-            
-            <div className="flex flex-col md:flex-row items-start md:items-end justify-between border-t border-gray-300 dark:border-gray-800 pt-8 gap-8">
-              <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-xl font-medium leading-relaxed">
-                Your trusted partner for exceptional cleaning solutions in {PRIMARY_CITY}. We provide thorough cleaning beyond routine tasks.
+      {/* 1. HERO SECTION */}
+      <section className="relative pt-32 pb-12 md:pb-20 bg-background-light dark:bg-background-dark overflow-hidden bg-grid-pattern">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Text Content */}
+            <div className="z-10 flex flex-col items-center lg:items-start text-center lg:text-left">
+              <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-full text-[10px] md:text-sm font-bold tracking-wide uppercase mb-6">
+                Professional Cleaning Services
+              </div>
+              <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-8 text-gray-900 dark:text-white uppercase">
+                Master <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hygiene</span>
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-10 max-w-lg">
+                Expert Water Tank Cleaning, STP Maintenance, and Deep Cleaning solutions for modern living in {PRIMARY_CITY}.
               </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                <Link to="/contact" className="group relative overflow-hidden bg-gray-900 dark:bg-white text-white dark:text-black px-10 py-5 font-bold text-lg uppercase tracking-wider">
-                  <span className="relative z-10 group-hover:text-white dark:group-hover:text-black transition-colors">Book Service</span>
-                  <div className="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-150 group-hover:bg-blue-600 dark:group-hover:bg-blue-300 opacity-20"></div>
+              <div className="flex flex-col sm:flex-row gap-4 mb-8 w-full sm:w-auto justify-center lg:justify-start">
+                <Link to="/contact" className="px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black font-bold text-lg rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-all text-center">
+                  Book Service
                 </Link>
-                <a href={`tel:${PHONE_NUMBER.replace(/\s+/g, '')}`} className="px-10 py-5 border border-gray-300 dark:border-gray-700 font-bold text-lg uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-gray-800 transition dark:text-white">
-                  Call Us
+                <a href={`tel:${PHONE_NUMBER.replace(/\s+/g, '')}`} className="px-8 py-4 border border-gray-300 dark:border-gray-700 font-bold text-lg rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-center dark:text-white">
+                  Call {PHONE_NUMBER}
                 </a>
               </div>
+
+
+            </div>
+
+            {/* Right: Image (Rounded Card style) - HIDDEN ON MOBILE */}
+            <div className="hidden lg:block relative h-[500px] w-full bg-gray-100 dark:bg-gray-800 rounded-[3rem] overflow-hidden shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-700">
+              <img
+                src="images/hero-image.png"
+                alt="Professional Cleaning"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              <div className="absolute bottom-8 left-8 right-8 text-white">
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
+                  <div className="text-4xl">✨</div>
+                  <div>
+                    <p className="font-bold text-lg">5-Star Rated</p>
+                    <p className="text-sm opacity-80">By 10,000+ Happy Customers</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Trusted By Section (Updated) */}
-      <section className="py-20 bg-surface-light dark:bg-surface-dark border-y border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600 mb-2">Our Reputation</p>
-              <h2 className="text-3xl font-bold dark:text-white">Trusted by 500+ Corporations & Societies</h2>
-            </div>
-            <Link to="/clients" className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest mt-6 md:mt-0 hover:text-blue-600 transition-colors dark:text-gray-300">
-              Explore All Clients
-              <span className="transform group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {featuredClients.map((client, i) => (
-              <div key={i} className="h-28 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 flex items-center justify-center p-4 hover:border-blue-500 transition-colors cursor-default group">
-                {client.logo ? (
-                  <img src={client.logo} alt={client.name} className="max-h-12 opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all" />
-                ) : (
-                  <span className="text-lg md:text-xl font-bold text-gray-400 dark:text-gray-600 uppercase tracking-tight text-center group-hover:text-blue-600 dark:group-hover:text-blue-500 transition-colors">
-                    {client.name}
-                  </span>
-                )}
+      {/* 2. LOGO MARQUEE: Full Width */}
+      <section className="py-12 bg-surface-light dark:bg-surface-dark border-y border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 mb-8 text-center text-sm font-bold uppercase tracking-widest text-gray-400">Trusted By Industry Leaders</div>
+        <div className="relative w-full overflow-hidden">
+          <div className="flex gap-12 animate-scroll w-max">
+            {marqueeClients.map((client, i) => (
+              <div key={i} className="flex items-center justify-center min-w-[150px] md:min-w-[200px] grayscale hover:grayscale-0 transition-all opacity-50 hover:opacity-100">
+                {client.logo ? <img src={client.logo} className="h-12 w-auto object-contain" alt={client.name} /> : <span className="text-xl font-bold dark:text-white">{client.name}</span>}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. Services: "Bento Box" Grid Layout - No Images, Clean Typography */}
-      <section id="services" className="py-32 bg-white dark:bg-black relative">
+      {/* 3. AREAS: Circular Grid (Mobile: Horizontal Scroll) */}
+      <section className="py-12 md:py-24 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="mb-20">
-            <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">Our Expertise</h2>
-            <p className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">Engineered for perfection.</p>
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-4xl font-bold mb-4 dark:text-white">Serving Top Locations</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">We are present in over 50+ neighborhoods across {PRIMARY_CITY}. Here are our primary hubs.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SERVICES.map((service, index) => (
-              <div key={service.id} className={`group relative bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-500 ${index === 0 ? 'md:col-span-2 md:aspect-[2/1]' : 'md:aspect-square'}`}>
-                
-                {/* Clean Background - Removed Image */}
-                <div className="absolute inset-0 z-0 bg-transparent group-hover:bg-blue-50 dark:group-hover:bg-blue-900/10 transition-colors duration-500"></div>
 
-                <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-between md:justify-end">
-                    <div className="absolute top-6 right-6 w-12 h-12 border border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all">
-                    ↗
+          {/* Mobile View: Top 12 Locations in 2x2 Pages */}
+          <div
+            className="flex md:hidden overflow-x-auto snap-x snap-mandatory no-scrollbar"
+            onScroll={(e) => {
+              const scrollLeft = e.currentTarget.scrollLeft;
+              const width = e.currentTarget.clientWidth;
+              if (width > 0) setActiveArea(Math.round(scrollLeft / width));
+            }}
+          >
+            {Array.from({ length: Math.ceil(Math.min(AREAS.length, 12) / 4) }).map((_, pageIndex) => (
+              <div key={pageIndex} className="min-w-full snap-center grid grid-cols-2 gap-4 p-4">
+                {AREAS.slice(pageIndex * 4, Math.min((pageIndex + 1) * 4, 12)).map((area, i) => (
+                  <Link key={i} to={`/areas/${area.slug}`} className="flex flex-col items-center gap-3 text-center">
+                    <div className="w-24 h-24 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 flex items-center justify-center shadow-md overflow-hidden relative">
+                      <span className="text-2xl font-black text-gray-300 dark:text-gray-700 z-10">{area.name.substring(0, 2).toUpperCase()}</span>
                     </div>
-                    <div>
-                      <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">{service.name}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed line-clamp-3">{service.longDesc}</p>
-                      <Link to={`/services/${service.slug}`} className="inline-block text-sm font-bold uppercase tracking-widest border-b border-gray-300 dark:border-gray-700 pb-1 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-500 hover:border-blue-500 transition-colors">
-                      Explore
-                      </Link>
+                    <h3 className="font-bold text-sm dark:text-white leading-tight">{area.name}</h3>
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop View: All Locations + Navigation */}
+          <div className="hidden md:block relative group">
+            <button
+              onClick={() => scrollContainer(areasRef, -300)}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 transition-all opacity-0 group-hover:opacity-100"
+              aria-label="Scroll Left"
+            >
+              ←
+            </button>
+
+            <button
+              onClick={() => scrollContainer(areasRef, 300)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 transition-all opacity-0 group-hover:opacity-100"
+              aria-label="Scroll Right"
+            >
+              →
+            </button>
+
+            <div
+              ref={areasRef}
+              className="overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth scroll-px-20"
+            >
+              <div className="flex py-8 px-20 space-x-8 w-max">
+                {AREAS.map((area, i) => (
+                  <Link key={i} to={`/areas/${area.slug}`} className="min-w-[280px] snap-center group/item flex flex-col items-center gap-4 text-center">
+                    <div className="w-40 h-40 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 flex items-center justify-center group-hover/item:scale-105 group-hover/item:border-blue-500 transition-all duration-300 shadow-lg relative">
+                      <span className="text-3xl font-black text-gray-300 dark:text-gray-700 group-hover/item:text-blue-600 z-10 transition-colors">{area.name.substring(0, 2).toUpperCase()}</span>
+                      <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10 opacity-0 group-hover/item:opacity-100 transition-opacity rounded-full"></div>
                     </div>
+                    <h3 className="font-bold text-lg dark:text-white group-hover/item:text-blue-600 transition-colors uppercase tracking-tight">{area.name}</h3>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+          {renderDots(Math.ceil(Math.min(AREAS.length, 12) / 4), activeArea)}
+          <div className="text-center mt-12">
+            <Link to="/locations" className="text-sm font-bold uppercase tracking-widest border-b border-black dark:border-white pb-1 hover:text-blue-600 hover:border-blue-600 transition-colors dark:text-white">View All Locations</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. SERVICES: 3 Column Large Cards */}
+      <section id="services" className="py-12 md:py-24 bg-white dark:bg-black">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-4xl font-bold mb-4 dark:text-white">Our Core Services</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">Specialized cleaning solutions engineered for perfection.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {SERVICES.map((service, i) => (
+              <div key={i} className="group relative bg-surface-light dark:bg-surface-dark rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow duration-500">
+                <div className="h-64 overflow-hidden">
+                  <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="p-8 relative">
+                  {/* Floating Number */}
+                  <div className="absolute -top-8 right-8 w-16 h-16 bg-blue-600 text-white flex items-center justify-center font-bold text-2xl rounded-2xl shadow-lg border-4 border-white dark:border-surface-dark">
+                    0{i + 1}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 dark:text-white pr-10">{service.name}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8 line-clamp-3 leading-relaxed">{service.shortDesc}</p>
+                  <Link to={`/services/${service.slug}`} className="inline-block w-full py-3 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 text-center rounded-xl font-bold hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
+                    Learn More
+                  </Link>
                 </div>
               </div>
             ))}
@@ -125,78 +247,104 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Trust Stats: Minimalist */}
-      <section className="py-32 bg-black text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left border-t border-gray-800 pt-12">
-             {[
-               { label: 'Years Experience', value: '25+' },
-               { label: 'Happy Clients', value: '10K+' },
-               { label: 'Service Areas', value: '50+' },
-               { label: 'Rating', value: '4.9/5' },
-             ].map((stat, i) => (
-               <div key={i}>
-                 <p className="text-5xl md:text-6xl font-extrabold tracking-tighter mb-2">{stat.value}</p>
-                 <p className="text-gray-500 uppercase tracking-widest text-sm font-bold">{stat.label}</p>
-               </div>
-             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Why Us: Split Visual Layout */}
-      <section className="py-32 bg-background-light dark:bg-background-dark">
+      {/* 5. FEATURES: 3x2 Grid (Mobile: Horizontal Scroll) */}
+      <section className="py-12 md:py-24 bg-surface-light dark:bg-surface-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-           <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600 mb-12">The {COMPANY_NAME} Standard</h2>
-           
-           <div className="grid lg:grid-cols-2 gap-16 items-center">
-             <div className="space-y-12 order-2 lg:order-1">
-               {[
-                 { title: "25+ Years Legacy", desc: "Decades of experience in maintaining overall sanitation of residential and commercial facilities." },
-                 { title: "Beyond Routine", desc: "We provide thorough cleaning beyond routine tasks using advanced techniques and eco-friendly products." },
-                 { title: "High Standards", desc: "Services designed to meet high cleanliness standards with a skilled team dedicated to spotless results." }
-               ].map((item, i) => (
-                 <div key={i} className="flex flex-col md:items-start border-l-2 border-gray-200 dark:border-gray-800 pl-8 group hover:border-blue-600 transition-colors duration-300">
-                   <span className="text-blue-600 font-mono text-xl mb-2">0{i+1}</span>
-                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
-                   <p className="text-lg text-gray-500 dark:text-gray-400">{item.desc}</p>
-                 </div>
-               ))}
-             </div>
-             
-             {/* Visual Infographic Side */}
-             <div className="order-1 lg:order-2 relative h-[600px] w-full bg-gray-100 dark:bg-gray-900 overflow-hidden rounded-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80" 
-                  alt="Modern Clean Interior" 
-                  className="w-full h-full object-cover opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/80 to-transparent"></div>
-                <div className="absolute bottom-8 left-8 right-8 text-white">
-                  <div className="text-5xl font-extrabold mb-2">100%</div>
-                  <div className="text-lg font-bold uppercase tracking-widest opacity-80">Satisfaction Guarantee</div>
-                </div>
-             </div>
-           </div>
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-4xl font-bold mb-4 dark:text-white">Why Choose Us</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">Standards that set us apart from the competition.</p>
+          </div>
+
+          <div
+            ref={featuresRef}
+            onScroll={() => handleScroll(featuresRef, setActiveFeature)}
+            className="flex overflow-x-auto snap-x space-x-4 pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:space-x-0 md:pb-0 no-scrollbar"
+          >
+            {FEATURES.map((feat, i) => (
+              <div
+                key={i}
+                className="min-w-[85vw] md:min-w-0 snap-center bg-white dark:bg-black p-8 rounded-2xl border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300 inline-block">{feat.icon}</div>
+                <h3 className="text-xl font-bold mb-3 dark:text-white">{feat.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">
+                  {feat.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+          {renderDots(FEATURES.length, activeFeature)}
         </div>
       </section>
 
-      {/* 6. Areas Grid */}
-      <section id="locations" className="py-32 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-           <h2 className="text-4xl font-bold mb-12 dark:text-white">Serving {PRIMARY_CITY}</h2>
-           <div className="flex flex-wrap justify-center gap-4">
-             {AREAS.map(area => (
-               <Link 
-                 key={area.slug} 
-                 to={`/areas/${area.slug}`} 
-                 className="px-8 py-4 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-none font-bold text-sm uppercase tracking-wider hover:bg-blue-600 hover:border-blue-600 hover:text-white dark:hover:bg-blue-600 transition-all dark:text-white"
-               >
-                 {area.name}
-               </Link>
-             ))}
-           </div>
+      {/* 6. TESTIMONIALS: Simple Grid (Mobile: Horizontal Scroll) */}
+      <section className="py-12 md:py-24 bg-background-light dark:bg-background-dark border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Mobile Only 5-Star Badge - Moved from Hero */}
+          <div className="flex justify-center mb-8 lg:hidden">
+            <div className="flex items-center gap-4 bg-white dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-lg w-fit">
+              <div className="text-4xl">✨</div>
+              <div className="text-left">
+                <p className="font-bold text-lg dark:text-white">5-Star Rated</p>
+                <p className="text-sm text-gray-500">By 10,000+ Happy Customers</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-4xl font-bold mb-4 dark:text-white">Client Voices</h2>
+            <div className="flex gap-1 justify-center text-yellow-500 text-xl mb-2">
+              {'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}
+            </div>
+            <p className="text-gray-500">Based on 2000+ Reviews</p>
+          </div>
+
+          <div
+            ref={testimonialsRef}
+            onScroll={() => handleScroll(testimonialsRef, setActiveTestimonial)}
+            className="flex overflow-x-auto snap-x space-x-4 pb-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 md:space-x-0 md:pb-0 no-scrollbar"
+          >
+            {SERVICES.flatMap(s => s.testimonials).slice(0, 4).map((t, i) => (
+              <div key={i} className="min-w-[85vw] md:min-w-0 snap-center bg-white dark:bg-surface-dark p-8 rounded-2xl border border-gray-100 dark:border-gray-800 relative">
+                <span className="text-6xl text-blue-100 dark:text-blue-900 absolute top-4 left-4 font-serif">"</span>
+                <p className="relative z-10 text-gray-700 dark:text-gray-300 italic mb-6 leading-relaxed">
+                  {t.content}
+                </p>
+                <div>
+                  <p className="font-bold dark:text-white">{t.name}</p>
+                  <p className="text-xs text-gray-500 uppercase tracking-widest">{t.area}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          {renderDots(4, activeTestimonial)}
+        </div>
+      </section>
+
+      {/* 7. FAQ: Accordion */}
+      <section className="py-12 md:py-24 bg-surface-light dark:bg-surface-dark">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-4xl font-bold mb-4 dark:text-white">Got Questions?</h2>
+            <p className="text-gray-500">We have answers.</p>
+          </div>
+
+          <div className="space-y-4">
+            {FAQS.map((faq, i) => (
+              <div key={i} className="bg-white dark:bg-black rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800">
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between p-6 text-left font-bold text-lg dark:text-white hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors"
+                >
+                  {faq.q}
+                  <span className={`transform transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`}>▼</span>
+                </button>
+                <div className={`px-6 text-gray-600 dark:text-gray-400 leading-relaxed overflow-hidden transition-all duration-300 ${openFaq === i ? 'max-h-40 py-6 border-t border-gray-100 dark:border-gray-800' : 'max-h-0'}`}>
+                  {faq.a}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

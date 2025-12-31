@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
                 {AREAS.slice(0, 4).map(a => (
                   <li key={a.slug}><Link to={`/areas/${a.slug}`} className="hover:text-blue-600 transition">{a.name}</Link></li>
                 ))}
-                <li><Link to="/#locations" className="text-blue-600">View All</Link></li>
+                <li><Link to="/locations" className="text-blue-600">View All</Link></li>
               </ul>
             </div>
             <div>

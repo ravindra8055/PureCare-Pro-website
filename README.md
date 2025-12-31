@@ -1,29 +1,58 @@
 ---
-title: Purecare Pro
-emoji: 🌖
-colorFrom: yellow
-colorTo: yellow
+title: PureCare Pro
+emoji: 🧹
+colorFrom: blue
+colorTo: green
 sdk: docker
 pinned: false
 ---
 
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# PureCare Pro - Professional Cleaning Services
 
-# Run and deploy your AI Studio app
+PureCare Pro is a modern, responsive Content Management System (CMS) and business website designed for professional cleaning services. It specializes in water tank cleaning, sewage treatment plant (STP) maintenance, and deep home cleaning.
 
-This contains everything you need to run your app locally.
+## 🚀 Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1IejB-A-a9ZopLjlSMVR0GJmA7ScHRnEs
+*   **Service Showcase:** Detailed pages for Tank Cleaning, STP Maintenance, and Deep Cleaning.
+*   **Area Directory:** SEO-friendly pages targeting specific service areas (e.g., "Tank Cleaning in Indiranagar").
+*   **Dynamic Routing:** Smart routing for various service and location combinations.
+*   **Responsive Design:** Fully responsive UI built with Tailwind CSS.
+*   **Dark Mode:** Built-in dark mode support.
+*   **Contact Forms:** Integrated contact and booking request forms.
 
-## Run Locally
+## 🛠️ Tech Stack
 
-**Prerequisites:**  Node.js
+*   **Frontend:** React (v19), TypeScript
+*   **Build Tool:** Vite
+*   **Styling:** Tailwind CSS
+*   **Routing:** React Router v7
+*   **Deployment:** Docker / Nginx
 
+## 🏃‍♂️ Run Locally
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+2.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+
+3.  **Build for production:**
+    ```bash
+    npm run build
+    ```
+
+## 🐳 Docker Deployment
+
+This project includes a multi-stage `Dockerfile` optimized for production using Nginx.
+
+```bash
+# Build the image
+docker build -t purecare-pro .
+
+# Run the container
+docker run -p 7860:7860 purecare-pro
+```

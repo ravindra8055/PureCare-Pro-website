@@ -1,40 +1,17 @@
-
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Home from './pages/Home';
-import ServicePage from './pages/ServicePage';
-import AreaDirectory from './pages/AreaDirectory';
-import ClientsPage from './pages/ClientsPage';
 import { ThemeProvider } from './context/ThemeContext';
 import { COMPANY_NAME, CLIENTS, ADDRESS, PHONE_NUMBER, PHONE_NUMBER_2 } from './constants';
 
-// Scroll to top on route change, handling hash links for anchors
-const ScrollToTop = () => {
-  const { pathname, hash } = useLocation();
+// Lazy Load Pages
+const Home = React.lazy(() => import('./pages/Home'));
+const ServicePage = React.lazy(() => import('./pages/ServicePage'));
+const AreaDirectory = React.lazy(() => import('./pages/AreaDirectory'));
+const ClientsPage = React.lazy(() => import('./pages/ClientsPage'));
 
-  React.useEffect(() => {
-    if (hash) {
-      // If there is a hash, attempt to scroll to the element
-      const elementId = hash.replace('#', '');
-      const element = document.getElementById(elementId);
-      
-      if (element) {
-        // Slight delay to ensure DOM is fully rendered/layout is stable
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
-    } else {
-      // Only scroll to top if there is no hash
-      window.scrollTo(0, 0);
-    }
-  }, [pathname, hash]);
-
-  return null;
-};
-
+// Inline Components (kept as they were)
 const AboutPage = () => (
   <div className="pt-32 pb-24 min-h-screen bg-background-light dark:bg-background-dark">
     <div className="max-w-4xl mx-auto px-6 lg:px-8">
@@ -46,12 +23,11 @@ const AboutPage = () => (
           Your trusted partner for exceptional cleaning solutions. We go beyond routine tasks to ensure optimal hygiene.
         </p>
       </div>
-      
-      {/* Team Image */}
+
       <div className="mb-16 w-full h-[400px] overflow-hidden rounded-lg shadow-xl">
-        <img 
-          src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80" 
-          alt="Our Professional Team" 
+        <img
+          src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80"
+          alt="Our Professional Team"
           className="w-full h-full object-cover"
         />
       </div>
@@ -60,7 +36,7 @@ const AboutPage = () => (
         <p className="text-xl leading-relaxed mb-8">
           At <span className="font-bold text-blue-600">{COMPANY_NAME}</span>, our services include meticulous tank and sump cleaning, thorough sewage treatment plant (STP) maintenance, and comprehensive home deep cleaning. We utilize advanced techniques and eco-friendly products to ensure optimal hygiene and efficiency in every task.
         </p>
-        
+
         <div className="grid md:grid-cols-2 gap-8 my-12 not-prose">
           <div className="p-8 bg-surface-light dark:bg-surface-dark border-t-4 border-blue-600 shadow-lg">
             <h3 className="text-2xl font-bold mb-4 dark:text-white">Skilled Team</h3>
@@ -79,16 +55,15 @@ const AboutPage = () => (
         <p className="text-lg leading-relaxed">
           With a focus on quality and customer satisfaction, we guarantee a cleaner, healthier environment for you and your loved ones. Experience unparalleled cleanliness and professionalism with us today.
         </p>
-        
-        {/* Client Grid */}
+
         <div className="mt-20 not-prose border-t border-gray-200 dark:border-gray-800 pt-16">
           <h2 className="text-3xl font-bold mb-10 text-center dark:text-white">Distinguished Clientele</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-             {CLIENTS.map((client, i) => (
-               <div key={i} className="p-4 bg-gray-50 dark:bg-surface-dark border border-gray-100 dark:border-gray-800 flex items-center justify-center text-center font-semibold text-gray-600 dark:text-gray-400 text-sm hover:border-blue-500 transition-colors">
-                 {client.name}
-               </div>
-             ))}
+            {CLIENTS.map((client, i) => (
+              <div key={i} className="p-4 bg-gray-50 dark:bg-surface-dark border border-gray-100 dark:border-gray-800 flex items-center justify-center text-center font-semibold text-gray-600 dark:text-gray-400 text-sm hover:border-blue-500 transition-colors">
+                {client.name}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -101,7 +76,6 @@ const ContactPlaceholder = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
     setTimeout(() => {
       setSubmitted(true);
       window.scrollTo(0, 0);
@@ -128,7 +102,7 @@ const ContactPlaceholder = () => {
   return (
     <div className="py-32 max-w-3xl mx-auto px-4 text-center min-h-screen flex flex-col justify-center">
       <h1 className="text-5xl font-extrabold mb-12 tracking-tight dark:text-white">Get In Touch</h1>
-      
+
       <div className="mb-16 grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
         <div className="bg-surface-light dark:bg-surface-dark p-8 border-l-4 border-blue-600">
           <h3 className="text-xl font-bold mb-4 dark:text-white">Visit Us</h3>
@@ -162,6 +136,35 @@ const ContactPlaceholder = () => {
   );
 };
 
+// Scroll to top on route change, handling hash links for anchors
+const ScrollToTop = () => {
+  const { pathname, hash } = useLocation();
+
+  React.useEffect(() => {
+    if (hash) {
+      const elementId = hash.replace('#', '');
+      const element = document.getElementById(elementId);
+
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
+};
+
+// Loading Component
+const PageLoader = () => (
+  <div className="min-h-[50vh] flex items-center justify-center">
+    <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+  </div>
+);
+
 const App: React.FC = () => {
   return (
     <ThemeProvider>
@@ -170,16 +173,18 @@ const App: React.FC = () => {
         <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark text-gray-900 dark:text-white transition-colors duration-300">
           <Navbar />
           <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/clients" element={<ClientsPage />} />
-              <Route path="/services/:serviceSlug" element={<ServicePage />} />
-              <Route path="/areas/:areaSlug" element={<AreaDirectory />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPlaceholder />} />
-              {/* Dynamic Catch-all for SEO friendly Service+Area URLs e.g. water-tank-cleaning-in-rajarajeshwari-nagar-bangalore */}
-              <Route path="/:seoSlug" element={<ServicePage isAreaPage />} />
-            </Routes>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/clients" element={<ClientsPage />} />
+                <Route path="/services/:serviceSlug" element={<ServicePage />} />
+                <Route path="/areas/:areaSlug" element={<AreaDirectory />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPlaceholder />} />
+                {/* Dynamic Catch-all for SEO friendly Service+Area URLs */}
+                <Route path="/:seoSlug" element={<ServicePage isAreaPage />} />
+              </Routes>
+            </Suspense>
           </main>
           <Footer />
         </div>

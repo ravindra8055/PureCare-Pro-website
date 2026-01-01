@@ -49,7 +49,7 @@ export const AREAS: AreaInfo[] = [
   { slug: "mayasandra", name: "Mayasandra", city: "Bangalore", landmarks: ["Attibele", "Anekal", "Border Checkpost"], zipCodes: ["562123"] },
   { slug: "rmv-extension-ii-stage", name: "R. M. V. Extension II Stage", city: "Bangalore", landmarks: ["Dollars Colony", "ISRO HQ", "Sanjaynagar"], zipCodes: ["560094"] },
   { slug: "seegehalli", name: "Seegahalli", city: "Bangalore", landmarks: ["Whitefield", "Kadugodi", "Belathur"], zipCodes: ["560067"] },
-  { slug: "someshwara nagar", name: "Someswarapura", city: "Bangalore", landmarks: ["Jayanagar", "Siddapura", "Nimhans"], zipCodes: ["560011"] },
+  { slug: "someshwara-nagar", name: "Someswarapura", city: "Bangalore", landmarks: ["Jayanagar", "Siddapura", "Nimhans"], zipCodes: ["560011"] },
   { slug: "sri-jayachamarajendra-road", name: "Sri Jayachamarajendra Road", city: "Bangalore", landmarks: ["SJC Road", "Corporation Circle", "Unity Building"], zipCodes: ["560002"] },
   { slug: "venkateswara-layout", name: "Venkateswara Layout", city: "Bangalore", landmarks: ["Hosakerehalli", "Padmanabhanagar", "Kathriguppe"], zipCodes: ["560085"] },
   { slug: "vimanapura", name: "Vimanapura", city: "Bangalore", landmarks: ["HAL", "Isro Colony", "Old Airport Road"], zipCodes: ["560017"] }

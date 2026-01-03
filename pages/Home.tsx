@@ -42,21 +42,39 @@ const Home: React.FC = () => {
   // Marquee Logic (Duplicating clients for smooth loop)
   const marqueeClients = [...CLIENTS, ...CLIENTS];
 
-  // Generic Scroll Handler
+  // Generic Scroll Handler for Mobile
   const handleScroll = (ref: React.RefObject<HTMLDivElement>, setIndex: (i: number) => void) => {
     if (ref.current) {
       const scrollLeft = ref.current.scrollLeft;
-      const itemWidth = ref.current.firstElementChild?.clientWidth || 0;
-      if (itemWidth > 0) {
-        const newIndex = Math.round(scrollLeft / itemWidth);
-        setIndex(newIndex);
+      const width = ref.current.clientWidth;
+      if (width > 0) {
+        setIndex(Math.round(scrollLeft / width));
       }
+    }
+  };
+
+  const handleDesktopScroll = () => {
+    if (areasRef.current) {
+      const scrollLeft = areasRef.current.scrollLeft;
+      const itemWidth = 280; // min-w-[280px]
+      const gap = 32; // space-x-8
+      const newIndex = Math.round(scrollLeft / (itemWidth + gap));
+      setActiveArea(newIndex);
     }
   };
 
   const scrollContainer = (ref: React.RefObject<HTMLDivElement>, offset: number) => {
     if (ref.current) {
       ref.current.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  };
+
+  const scrollToGroup = (groupIndex: number) => {
+    if (areasRef.current) {
+      const itemWidth = 280;
+      const gap = 32;
+      const scrollAmount = groupIndex * 3 * (itemWidth + gap);
+      areasRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
@@ -174,31 +192,16 @@ const Home: React.FC = () => {
             ))}
           </div>
 
-          {/* Desktop View: All Locations + Navigation */}
+          {/* Desktop View: All Locations */}
           <div className="hidden md:block relative group">
-            <button
-              onClick={() => scrollContainer(areasRef, -300)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 transition-all opacity-0 group-hover:opacity-100"
-              aria-label="Scroll Left"
-            >
-              ←
-            </button>
-
-            <button
-              onClick={() => scrollContainer(areasRef, 300)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 transition-all opacity-0 group-hover:opacity-100"
-              aria-label="Scroll Right"
-            >
-              →
-            </button>
-
             <div
               ref={areasRef}
-              className="overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth scroll-px-20"
+              onScroll={handleDesktopScroll}
+              className="overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth scroll-pl-8"
             >
-              <div className="flex py-8 px-20 space-x-8 w-max">
+              <div className="flex py-8 pl-8 pr-40 space-x-8 w-max">
                 {AREAS.map((area, i) => (
-                  <Link key={i} to={`/areas/${area.slug}`} className="min-w-[280px] snap-center group/item flex flex-col items-center gap-4 text-center">
+                  <Link key={i} to={`/areas/${area.slug}`} className="min-w-[280px] snap-start group/item flex flex-col items-center gap-4 text-center">
                     <div className="w-40 h-40 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 flex items-center justify-center group-hover/item:scale-105 group-hover/item:border-blue-500 transition-all duration-300 shadow-lg relative">
                       <span className="text-3xl font-black text-gray-300 dark:text-gray-700 group-hover/item:text-blue-600 z-10 transition-colors">{area.name.substring(0, 2).toUpperCase()}</span>
                       <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10 opacity-0 group-hover/item:opacity-100 transition-opacity rounded-full"></div>
@@ -207,6 +210,44 @@ const Home: React.FC = () => {
                   </Link>
                 ))}
               </div>
+            </div>
+
+            {/* Desktop Navigation Controls: Moved Below */}
+            <div className="flex items-center justify-center gap-8 mt-4">
+              <button
+                onClick={() => {
+                  const currentGroup = Math.floor(activeArea / 3);
+                  scrollToGroup(Math.max(0, currentGroup - 1));
+                }}
+                className="w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-md border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95"
+                aria-label="Scroll Left"
+              >
+                <span className="text-xl">←</span>
+              </button>
+
+              {/* Desktop Dots: Now Interactive */}
+              <div className="flex gap-2">
+                {Array.from({ length: Math.ceil(AREAS.length / 3) }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => scrollToGroup(i)}
+                    className={`h-2 rounded-full transition-all duration-300 ${activeArea >= i * 3 && activeArea < (i + 1) * 3 ? 'bg-blue-600 w-6' : 'bg-gray-300 dark:bg-gray-700 w-2 hover:bg-gray-400'}`}
+                    aria-label={`Go to group ${i + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={() => {
+                  const currentGroup = Math.floor(activeArea / 3);
+                  const totalGroups = Math.ceil(AREAS.length / 3);
+                  scrollToGroup(Math.min(totalGroups - 1, currentGroup + 1));
+                }}
+                className="w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-md border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95"
+                aria-label="Scroll Right"
+              >
+                <span className="text-xl">→</span>
+              </button>
             </div>
           </div>
           {renderDots(Math.ceil(Math.min(AREAS.length, 12) / 4), activeArea)}

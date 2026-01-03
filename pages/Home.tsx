@@ -73,10 +73,12 @@ const Home: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activeArea, setActiveArea] = useState(0);
+  const [activeInsight, setActiveInsight] = useState(0);
 
   const featuresRef = React.useRef<HTMLDivElement>(null);
   const testimonialsRef = React.useRef<HTMLDivElement>(null);
   const areasRef = React.useRef<HTMLDivElement>(null);
+  const insightsRef = React.useRef<HTMLDivElement>(null);
 
   // Marquee Logic (Duplicating clients for smooth loop)
   const marqueeClients = [...CLIENTS, ...CLIENTS];
@@ -200,7 +202,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* 3. AREAS: Circular Grid (Mobile: Horizontal Scroll) */}
-      <section className="py-12 md:py-24 bg-white dark:bg-black">
+      <section className="pt-12 md:pt-24 pb-6 md:pb-8 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-4xl font-bold mb-4 dark:text-white">Serving Top Locations</h2>
@@ -290,14 +292,14 @@ const Home: React.FC = () => {
             </div>
           </div>
           {renderDots(Math.ceil(Math.min(AREAS.length, 12) / 4), activeArea)}
-          <div className="text-center mt-12">
+          <div className="text-center mt-6 md:mt-8">
             <Link to="/locations" className="text-sm font-bold uppercase tracking-widest border-b border-black dark:border-white pb-1 hover:text-blue-600 hover:border-blue-600 transition-colors dark:text-white">View All Locations</Link>
           </div>
         </div>
       </section>
 
       {/* 4. SERVICES: 3 Column Large Cards */}
-      <section id="services" className="py-12 md:py-24 bg-white dark:bg-black">
+      <section id="services" className="pt-6 md:pt-8 pb-12 md:pb-24 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-4xl font-bold mb-4 dark:text-white">Our Core Services</h2>
@@ -357,32 +359,95 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 5.5 PROFESSIONAL INSIGHTS: Deep Content for SEO */}
-      <section className="py-12 md:py-24 bg-white dark:bg-black">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-8 dark:text-white border-l-4 border-blue-600 pl-4">Expert Cleaning Solutions for {PRIMARY_CITY}'s Urban Living</h2>
-          <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-400 leading-relaxed space-y-6">
-            <p>
-              In the rapidly growing landscape of {PRIMARY_CITY}, maintaining a hygienic environment for your home or business is no longer a luxury—it's a necessity. At <strong>{COMPANY_NAME}</strong>, we've spent over 25 years perfecting our mechanized cleaning processes to tackle the unique challenges of urban sanitation. Whether you're managing a corporate facility or a residential apartment, our scientifically-backed methods ensure that your water sources and living spaces remain bacteria-free and safe.
+      {/* 5.5 PROFESSIONAL INSIGHTS: Interactive Grid for SEO & Space Efficiency */}
+      <section className="pt-10 md:pt-20 pb-6 md:pb-10 bg-background-light dark:bg-background-dark">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div className="max-w-2xl">
+              <div className="inline-block px-3 py-1 mb-4 text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+                Professional Perspectives
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white leading-tight">
+                Expert Cleaning Solutions for {PRIMARY_CITY}'s Urban Living
+              </h2>
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 max-w-sm text-sm">
+              Our 25+ years of experience distilled into scientific approaches for a healthier home environment.
             </p>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Why Mechanized Water Tank Cleaning Matters</h3>
-            <p>
-              Conventional tank cleaning often involves manual scrubbing with minimal equipment, which fails to remove microscopic bio-films and hardened sludge. Our 6-stage mechanized process involves high-pressure jetting and UV radiation, ensuring that every corner of your sump or overhead tank is sterilized. This process is essential in {PRIMARY_CITY} where groundwater quality can vary, preventing diseases like cholera and jaundice before they start.
-            </p>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Precision STP Maintenance and Sewage Management</h3>
-            <p>
-              For commercial complexes and large residential societies, Sewage Treatment Plants (STP) are the heart of their sustainability efforts. Improper maintenance can lead to foul odors, equipment failure, and environmental penalties. Our experts specialize in the mechanical and biological upkeep of STPs, ensuring treated water meets all regulatory standards while prolonging the lifespan of your mechanical hardware.
-            </p>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Deep Cleaning Redefined</h3>
-            <p>
-              Our home and office deep cleaning services go far beyond the surface. We utilize industrial-grade vacuum cleaners and biodegradable cleaning agents to sanitize high-touch areas, carpets, and upholstery. By focusing on allergen removal and deep disinfection, we transform your space into a pristine haven that improves indoor air quality and overall productivity.
-            </p>
+          </div>
+
+          <div
+            ref={insightsRef}
+            onScroll={() => handleScroll(insightsRef, setActiveInsight)}
+            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar md:grid md:grid-cols-3 gap-6 md:gap-8 pb-4 md:pb-0"
+          >
+            {[
+              {
+                title: "Mechanized Water Tank Cleaning",
+                subtitle: "6-Stage Sterilization",
+                icon: "💧",
+                content: `Conventional tank cleaning often involves manual scrubbing with minimal equipment, which fails to remove microscopic bio-films and hardened sludge. Our 6-stage mechanized process involves high-pressure jetting and UV radiation, ensuring that every corner of your sump or overhead tank is sterilized. This process is essential in ${PRIMARY_CITY} where groundwater quality can vary, preventing diseases like cholera and jaundice before they start.`
+              },
+              {
+                title: "STP Maintenance & Management",
+                subtitle: "Biological & Mechanical Support",
+                icon: "⚙️",
+                content: `For commercial complexes and large residential societies, Sewage Treatment Plants (STP) are the heart of their sustainability efforts. Improper maintenance can lead to foul odors, equipment failure, and environmental penalties. Our experts specialize in the mechanical and biological upkeep of STPs, ensuring treated water meets all regulatory standards while prolonging the lifespan of your mechanical hardware.`
+              },
+              {
+                title: "Deep Cleaning Redefined",
+                subtitle: "Allergen & Bacteria Removal",
+                icon: "✨",
+                content: `Our home and office deep cleaning services go far beyond the surface. We utilize industrial-grade vacuum cleaners and biodegradable cleaning agents to sanitize high-touch areas, carpets, and upholstery. By focusing on allergen removal and deep disinfection, we transform your space into a pristine haven that improves indoor air quality and overall productivity.`
+              }
+            ].map((insight, i) => (
+              <div key={i} className="min-w-[85vw] md:min-w-0 snap-center group flex flex-col h-full bg-white dark:bg-surface-dark p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:border-blue-500/50 transition-all duration-500 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full group-hover:bg-blue-500/10 transition-colors"></div>
+                <div className="text-4xl mb-6">{insight.icon}</div>
+
+                <div className="flex-grow flex flex-col">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 min-h-[3.5rem] flex items-start">
+                    {insight.title}
+                  </h3>
+                  <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-6 min-h-[3rem] flex items-start">
+                    {insight.subtitle}
+                  </p>
+                </div>
+
+                {/* Mobile: Accordion Behavior logic (Click to expand) */}
+                <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
+                  <details className="group/details">
+                    <summary className="list-none cursor-pointer flex items-center justify-between text-base font-bold text-gray-500 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+                      <span>Read Scientific Approach</span>
+                      <span className="transform group-open/details:rotate-180 transition-transform text-xs">↓</span>
+                    </summary>
+                    <div className="mt-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-2 duration-300">
+                      {insight.content}
+                    </div>
+                  </details>
+                </div>
+
+                {/* Desktop: Content always visible */}
+                <style dangerouslySetInnerHTML={{
+                  __html: `
+                  @media (min-width: 768px) {
+                    .group/details summary { display: none !important; }
+                    .group/details { display: block !important; }
+                    .group/details > div { display: block !important; border: 0 !important; padding: 0 !important; margin-top: 0 !important; }
+                  }
+                `}} />
+              </div>
+            ))}
+          </div>
+          {/* Mobile Indicators */}
+          <div className="md:hidden mt-6">
+            {renderDots(3, activeInsight)}
           </div>
         </div>
       </section>
 
       {/* 6. TESTIMONIALS: Simple Grid (Mobile: Horizontal Scroll) */}
-      <section className="py-12 md:py-24 bg-background-light dark:bg-background-dark border-t border-gray-100 dark:border-gray-800">
+      <section className="pt-8 md:pt-12 pb-12 md:pb-24 bg-background-light dark:bg-background-dark border-t border-gray-100 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Mobile Only 5-Star Badge - Moved from Hero */}
           <div className="flex justify-center mb-8 lg:hidden">

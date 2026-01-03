@@ -2,6 +2,7 @@ import React, { useState, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CTAPopup from './components/CTAPopup';
 import { ThemeProvider } from './context/ThemeContext';
 import { COMPANY_NAME, CLIENTS, ADDRESS, PHONE_NUMBER, PHONE_NUMBER_2, BASE_URL } from './constants';
 import SEOHead from './components/SEOHead';
@@ -31,7 +32,7 @@ const AboutPage = () => {
     <div className="min-h-screen bg-background-light dark:bg-background-dark">
       <SEOHead data={seoData} />
       {/* Hero Section */}
-      <section className="relative pt-32 pb-12 md:pb-20 bg-background-light dark:bg-background-dark overflow-hidden bg-grid-pattern border-b border-gray-200 dark:border-gray-800">
+      <section className="relative pt-24 pb-8 md:pt-32 md:pb-20 bg-background-light dark:bg-background-dark overflow-hidden bg-grid-pattern border-b border-gray-200 dark:border-gray-800">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
@@ -48,9 +49,9 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <div className="max-w-4xl mx-auto px-6 lg:px-8 py-20">
+      <div className="max-w-4xl mx-auto px-6 lg:px-8 py-10 md:py-20">
 
-        <div className="mb-16 w-full h-[400px] overflow-hidden rounded-lg shadow-xl">
+        <div className="mb-10 md:mb-16 w-full h-[250px] md:h-[400px] overflow-hidden rounded-lg shadow-xl">
           <img
             src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80"
             alt="Our professional cleaning team at work"
@@ -63,7 +64,7 @@ const AboutPage = () => {
             At <span className="font-bold text-blue-600">{COMPANY_NAME}</span>, our services include meticulous tank and sump cleaning, thorough sewage treatment plant (STP) maintenance, and comprehensive home deep cleaning. We utilize advanced techniques and eco-friendly products to ensure optimal hygiene and efficiency in every task.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8 my-12 not-prose">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8 my-8 md:my-12 not-prose">
             <div className="p-8 bg-surface-light dark:bg-surface-dark border-t-4 border-blue-600 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 dark:text-white">Skilled Team</h2>
               <p className="text-gray-600 dark:text-gray-400">
@@ -78,8 +79,8 @@ const AboutPage = () => {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold mb-8 dark:text-white">Our Core Values</h2>
-          <div className="grid md:grid-cols-3 gap-8 my-12 not-prose">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 dark:text-white">Our Core Values</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 my-8 md:my-12 not-prose">
             <div className="text-center">
               <div className="text-4xl mb-4">🛡️</div>
               <h3 className="font-bold mb-2 dark:text-white">Integrity</h3>
@@ -101,8 +102,8 @@ const AboutPage = () => {
             With a focus on quality and customer satisfaction, we guarantee a cleaner, healthier environment for you and your loved ones. Experience unparalleled cleanliness and professionalism with us today.
           </p>
 
-          <div className="mt-20 not-prose border-t border-gray-200 dark:border-gray-800 pt-16">
-            <h2 className="text-3xl font-bold mb-10 text-center dark:text-white">Distinguished Clientele</h2>
+          <div className="mt-12 md:mt-20 not-prose border-t border-gray-200 dark:border-gray-800 pt-10 md:pt-16">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 md:mb-10 text-center dark:text-white">Distinguished Clientele</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {CLIENTS.map((client, i) => (
                 <div key={i} className="p-4 bg-gray-50 dark:bg-surface-dark border border-gray-100 dark:border-gray-800 flex items-center justify-center text-center font-semibold text-gray-600 dark:text-gray-400 text-sm hover:border-blue-500 transition-colors">
@@ -129,10 +130,10 @@ const ContactPlaceholder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark pb-24">
+    <div className="min-h-screen bg-background-light dark:bg-background-dark">
       <SEOHead data={seoData} />
       {/* Hero Section */}
-      <section className="relative pt-32 pb-12 md:pb-20 bg-background-light dark:bg-background-dark overflow-hidden bg-grid-pattern border-b border-gray-200 dark:border-gray-800">
+      <section className="relative pt-24 pb-8 md:pt-32 md:pb-20 bg-background-light dark:bg-background-dark overflow-hidden bg-grid-pattern border-b border-gray-200 dark:border-gray-800">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
@@ -149,9 +150,9 @@ const ContactPlaceholder = () => {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="pt-6 pb-0 md:py-20">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-12 text-center dark:text-white">Service Booking Request</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-12 text-center dark:text-white">Service Booking Request</h2>
           <Suspense fallback={<div className="h-96 flex items-center justify-center"><div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>}>
             <ContactForm />
           </Suspense>
@@ -214,6 +215,7 @@ const App: React.FC = () => {
           </main>
           <Footer />
           <AIAssistant />
+          <CTAPopup />
         </div>
       </Router>
     </ThemeProvider>

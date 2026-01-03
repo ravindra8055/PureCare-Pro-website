@@ -16,13 +16,13 @@ const ClientsPage: React.FC = () => {
   };
 
   return (
-    <div className="pt-32 pb-24 min-h-screen bg-background-light dark:bg-background-dark">
+    <div className="pt-24 pb-12 md:pt-32 md:pb-24 min-h-screen bg-background-light dark:bg-background-dark">
       <SEOHead data={seoData} />
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
         {/* Header */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-8 tracking-tight text-gray-900 dark:text-white">
+        <div className="text-center mb-6 md:mb-20">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 md:mb-8 tracking-tight text-gray-900 dark:text-white">
             Our Esteemed <span className="text-blue-600">Clientele.</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
@@ -31,7 +31,7 @@ const ClientsPage: React.FC = () => {
         </div>
 
         {/* Clients Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {CLIENTS.map((client, i) => (
             <div
               key={i}
@@ -40,8 +40,8 @@ const ClientsPage: React.FC = () => {
               {client.logo ? (
                 <img src={client.logo} alt={`${client.name} logo`} className="max-h-16 w-auto grayscale group-hover:grayscale-0 transition-all duration-300" />
               ) : (
-                <div className="text-center">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-400 dark:text-gray-500 uppercase tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <div className="text-center px-4">
+                  <h3 className="text-sm md:text-lg font-bold text-gray-400 dark:text-gray-500 uppercase tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {client.name}
                   </h3>
                 </div>
@@ -53,8 +53,8 @@ const ClientsPage: React.FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-24 text-center border-t border-gray-200 dark:border-gray-800 pt-16">
-          <h2 className="text-2xl font-bold mb-6 dark:text-white">Join our list of happy customers</h2>
+        <div className="mt-12 md:mt-24 text-center border-t border-gray-200 dark:border-gray-800 pt-10 md:pt-16">
+          <h2 className="text-xl md:text-2xl font-bold mb-6 dark:text-white">Join our list of happy customers</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contact" className="px-8 py-4 bg-blue-600 text-white font-bold uppercase tracking-wider hover:bg-blue-700 transition">
               Book a Service

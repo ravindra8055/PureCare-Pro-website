@@ -377,3 +377,10 @@ export const SERVICES: ServiceInfo[] = [
     equipmentUsed: ["Single Disc Floor Scrubbers", "Industrial Wet & Dry Vacuums", "Steam cleaners", "Microfiber mops", "Eco-friendly degreasers"]
   }
 ];
+
+export const CTA_CONFIG = {
+  SHOW_DELAY_MS: 30000, // 30 seconds
+  SCROLL_DEPTH_PERCENT: 50, // 50% scroll depth
+  COOKIE_EXPIRY_DAYS: 1, // 1 day suppression after close
+  STORAGE_KEY: "care_pro_cta_closed_at"
+};

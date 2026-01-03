@@ -91,7 +91,7 @@ const ContactForm: React.FC = () => {
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-6 py-0 py-6">
             <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-16 items-start">
 
                 {/* Left Side: Contact Info Card */}

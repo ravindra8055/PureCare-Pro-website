@@ -1,15 +1,54 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SERVICES, AREAS, PRIMARY_CITY, COMPANY_NAME, PHONE_NUMBER, CLIENTS } from '../constants';
+import { SERVICES, AREAS, PRIMARY_CITY, COMPANY_NAME, PHONE_NUMBER, CLIENTS, BASE_URL } from '../constants';
 import SEOHead from '../components/SEOHead';
 
 const Home: React.FC = () => {
   // SEO Data
   const seoData = {
-    title: `${COMPANY_NAME} | Best Cleaning Services in ${PRIMARY_CITY} | Tank, STP & Deep Cleaning`,
-    description: `${COMPANY_NAME} offers professional Water Tank Cleaning, STP Maintenance, and Home Deep Cleaning in ${PRIMARY_CITY}. 25+ Years Experience. Trusted by 10k+ Clients.`,
-    canonical: `https://purecarepro.com/`
+    title: `${COMPANY_NAME} | Best Cleaning Services in ${PRIMARY_CITY}`,
+    description: `Expert Water Tank Cleaning, STP Maintenance & Deep Cleaning in ${PRIMARY_CITY}. 25+ Yrs Exp. Trusted by 10k+ Clients.`,
+    canonical: BASE_URL,
+    hreflang: [
+      { lang: 'en-in', href: BASE_URL },
+      { lang: 'x-default', href: BASE_URL }
+    ],
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": COMPANY_NAME,
+      "image": `${BASE_URL}/images/hero-image.png`,
+      "@id": BASE_URL,
+      "url": BASE_URL,
+      "telephone": PHONE_NUMBER,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "207, 4th Cross, 2nd Main, 2nd Stage, Nagarabhavi",
+        "addressLocality": PRIMARY_CITY,
+        "postalCode": "560072",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 12.9716,
+        "longitude": 77.5946
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
+    }
   };
 
   // Generic Features for the 6-Grid Section
@@ -34,29 +73,49 @@ const Home: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [activeArea, setActiveArea] = useState(0);
+  const [activeInsight, setActiveInsight] = useState(0);
 
   const featuresRef = React.useRef<HTMLDivElement>(null);
   const testimonialsRef = React.useRef<HTMLDivElement>(null);
   const areasRef = React.useRef<HTMLDivElement>(null);
+  const insightsRef = React.useRef<HTMLDivElement>(null);
 
   // Marquee Logic (Duplicating clients for smooth loop)
   const marqueeClients = [...CLIENTS, ...CLIENTS];
 
-  // Generic Scroll Handler
+  // Generic Scroll Handler for Mobile
   const handleScroll = (ref: React.RefObject<HTMLDivElement>, setIndex: (i: number) => void) => {
     if (ref.current) {
       const scrollLeft = ref.current.scrollLeft;
-      const itemWidth = ref.current.firstElementChild?.clientWidth || 0;
-      if (itemWidth > 0) {
-        const newIndex = Math.round(scrollLeft / itemWidth);
-        setIndex(newIndex);
+      const width = ref.current.clientWidth;
+      if (width > 0) {
+        setIndex(Math.round(scrollLeft / width));
       }
+    }
+  };
+
+  const handleDesktopScroll = () => {
+    if (areasRef.current) {
+      const scrollLeft = areasRef.current.scrollLeft;
+      const itemWidth = 280; // min-w-[280px]
+      const gap = 32; // space-x-8
+      const newIndex = Math.round(scrollLeft / (itemWidth + gap));
+      setActiveArea(newIndex);
     }
   };
 
   const scrollContainer = (ref: React.RefObject<HTMLDivElement>, offset: number) => {
     if (ref.current) {
       ref.current.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  };
+
+  const scrollToGroup = (groupIndex: number) => {
+    if (areasRef.current) {
+      const itemWidth = 280;
+      const gap = 32;
+      const scrollAmount = groupIndex * 3 * (itemWidth + gap);
+      areasRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
@@ -89,7 +148,7 @@ const Home: React.FC = () => {
                 Professional Cleaning Services
               </div>
               <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-8 text-gray-900 dark:text-white uppercase">
-                Master <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hygiene</span>
+                Best Cleaning <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Services</span> in {PRIMARY_CITY}
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-10 max-w-lg">
                 Expert Water Tank Cleaning, STP Maintenance, and Deep Cleaning solutions for modern living in {PRIMARY_CITY}.
@@ -110,7 +169,7 @@ const Home: React.FC = () => {
             <div className="hidden lg:block relative h-[500px] w-full bg-gray-100 dark:bg-gray-800 rounded-[3rem] overflow-hidden shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-700">
               <img
                 src="images/hero-image.png"
-                alt="Professional Cleaning"
+                alt="Professional cleaning team providing deep cleaning services in Bangalore"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -143,7 +202,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* 3. AREAS: Circular Grid (Mobile: Horizontal Scroll) */}
-      <section className="py-12 md:py-24 bg-white dark:bg-black">
+      <section className="pt-12 md:pt-24 pb-6 md:pb-8 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-4xl font-bold mb-4 dark:text-white">Serving Top Locations</h2>
@@ -174,31 +233,16 @@ const Home: React.FC = () => {
             ))}
           </div>
 
-          {/* Desktop View: All Locations + Navigation */}
+          {/* Desktop View: All Locations */}
           <div className="hidden md:block relative group">
-            <button
-              onClick={() => scrollContainer(areasRef, -300)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 transition-all opacity-0 group-hover:opacity-100"
-              aria-label="Scroll Left"
-            >
-              ←
-            </button>
-
-            <button
-              onClick={() => scrollContainer(areasRef, 300)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-lg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 transition-all opacity-0 group-hover:opacity-100"
-              aria-label="Scroll Right"
-            >
-              →
-            </button>
-
             <div
               ref={areasRef}
-              className="overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth scroll-px-20"
+              onScroll={handleDesktopScroll}
+              className="overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth scroll-pl-8"
             >
-              <div className="flex py-8 px-20 space-x-8 w-max">
+              <div className="flex py-8 pl-8 pr-40 space-x-8 w-max">
                 {AREAS.map((area, i) => (
-                  <Link key={i} to={`/areas/${area.slug}`} className="min-w-[280px] snap-center group/item flex flex-col items-center gap-4 text-center">
+                  <Link key={i} to={`/areas/${area.slug}`} className="min-w-[280px] snap-start group/item flex flex-col items-center gap-4 text-center">
                     <div className="w-40 h-40 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 flex items-center justify-center group-hover/item:scale-105 group-hover/item:border-blue-500 transition-all duration-300 shadow-lg relative">
                       <span className="text-3xl font-black text-gray-300 dark:text-gray-700 group-hover/item:text-blue-600 z-10 transition-colors">{area.name.substring(0, 2).toUpperCase()}</span>
                       <div className="absolute inset-0 bg-blue-50 dark:bg-blue-900/10 opacity-0 group-hover/item:opacity-100 transition-opacity rounded-full"></div>
@@ -208,16 +252,54 @@ const Home: React.FC = () => {
                 ))}
               </div>
             </div>
+
+            {/* Desktop Navigation Controls: Moved Below */}
+            <div className="flex items-center justify-center gap-8 mt-4">
+              <button
+                onClick={() => {
+                  const currentGroup = Math.floor(activeArea / 3);
+                  scrollToGroup(Math.max(0, currentGroup - 1));
+                }}
+                className="w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-md border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95"
+                aria-label="Scroll Left"
+              >
+                <span className="text-xl">←</span>
+              </button>
+
+              {/* Desktop Dots: Now Interactive */}
+              <div className="flex gap-2">
+                {Array.from({ length: Math.ceil(AREAS.length / 3) }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => scrollToGroup(i)}
+                    className={`h-2 rounded-full transition-all duration-300 ${activeArea >= i * 3 && activeArea < (i + 1) * 3 ? 'bg-blue-600 w-6' : 'bg-gray-300 dark:bg-gray-700 w-2 hover:bg-gray-400'}`}
+                    aria-label={`Go to group ${i + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={() => {
+                  const currentGroup = Math.floor(activeArea / 3);
+                  const totalGroups = Math.ceil(AREAS.length / 3);
+                  scrollToGroup(Math.min(totalGroups - 1, currentGroup + 1));
+                }}
+                className="w-12 h-12 bg-white dark:bg-surface-dark rounded-full shadow-md border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95"
+                aria-label="Scroll Right"
+              >
+                <span className="text-xl">→</span>
+              </button>
+            </div>
           </div>
           {renderDots(Math.ceil(Math.min(AREAS.length, 12) / 4), activeArea)}
-          <div className="text-center mt-12">
+          <div className="text-center mt-6 md:mt-8">
             <Link to="/locations" className="text-sm font-bold uppercase tracking-widest border-b border-black dark:border-white pb-1 hover:text-blue-600 hover:border-blue-600 transition-colors dark:text-white">View All Locations</Link>
           </div>
         </div>
       </section>
 
       {/* 4. SERVICES: 3 Column Large Cards */}
-      <section id="services" className="py-12 md:py-24 bg-white dark:bg-black">
+      <section id="services" className="pt-6 md:pt-8 pb-12 md:pb-24 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-4xl font-bold mb-4 dark:text-white">Our Core Services</h2>
@@ -228,7 +310,7 @@ const Home: React.FC = () => {
             {SERVICES.map((service, i) => (
               <div key={i} className="group relative bg-surface-light dark:bg-surface-dark rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow duration-500">
                 <div className="h-64 overflow-hidden">
-                  <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src={service.image} alt={`Professional ${service.name} service - Hygienic Cleaning Services`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-8 relative">
                   {/* Floating Number */}
@@ -277,8 +359,95 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* 5.5 PROFESSIONAL INSIGHTS: Interactive Grid for SEO & Space Efficiency */}
+      <section className="pt-10 md:pt-20 pb-6 md:pb-10 bg-background-light dark:bg-background-dark">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div className="max-w-2xl">
+              <div className="inline-block px-3 py-1 mb-4 text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+                Professional Perspectives
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white leading-tight">
+                Expert Cleaning Solutions for {PRIMARY_CITY}'s Urban Living
+              </h2>
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 max-w-sm text-sm">
+              Our 25+ years of experience distilled into scientific approaches for a healthier home environment.
+            </p>
+          </div>
+
+          <div
+            ref={insightsRef}
+            onScroll={() => handleScroll(insightsRef, setActiveInsight)}
+            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar md:grid md:grid-cols-3 gap-6 md:gap-8 pb-4 md:pb-0"
+          >
+            {[
+              {
+                title: "Mechanized Water Tank Cleaning",
+                subtitle: "6-Stage Sterilization",
+                icon: "💧",
+                content: `Conventional tank cleaning often involves manual scrubbing with minimal equipment, which fails to remove microscopic bio-films and hardened sludge. Our 6-stage mechanized process involves high-pressure jetting and UV radiation, ensuring that every corner of your sump or overhead tank is sterilized. This process is essential in ${PRIMARY_CITY} where groundwater quality can vary, preventing diseases like cholera and jaundice before they start.`
+              },
+              {
+                title: "STP Maintenance & Management",
+                subtitle: "Biological & Mechanical Support",
+                icon: "⚙️",
+                content: `For commercial complexes and large residential societies, Sewage Treatment Plants (STP) are the heart of their sustainability efforts. Improper maintenance can lead to foul odors, equipment failure, and environmental penalties. Our experts specialize in the mechanical and biological upkeep of STPs, ensuring treated water meets all regulatory standards while prolonging the lifespan of your mechanical hardware.`
+              },
+              {
+                title: "Deep Cleaning Redefined",
+                subtitle: "Allergen & Bacteria Removal",
+                icon: "✨",
+                content: `Our home and office deep cleaning services go far beyond the surface. We utilize industrial-grade vacuum cleaners and biodegradable cleaning agents to sanitize high-touch areas, carpets, and upholstery. By focusing on allergen removal and deep disinfection, we transform your space into a pristine haven that improves indoor air quality and overall productivity.`
+              }
+            ].map((insight, i) => (
+              <div key={i} className="min-w-[85vw] md:min-w-0 snap-center group flex flex-col h-full bg-white dark:bg-surface-dark p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl hover:border-blue-500/50 transition-all duration-500 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full group-hover:bg-blue-500/10 transition-colors"></div>
+                <div className="text-4xl mb-6">{insight.icon}</div>
+
+                <div className="flex-grow flex flex-col">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 min-h-[3.5rem] flex items-start">
+                    {insight.title}
+                  </h3>
+                  <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-6 min-h-[3rem] flex items-start">
+                    {insight.subtitle}
+                  </p>
+                </div>
+
+                {/* Mobile: Accordion Behavior logic (Click to expand) */}
+                <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
+                  <details className="group/details">
+                    <summary className="list-none cursor-pointer flex items-center justify-between text-base font-bold text-gray-500 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+                      <span>Read Scientific Approach</span>
+                      <span className="transform group-open/details:rotate-180 transition-transform text-xs">↓</span>
+                    </summary>
+                    <div className="mt-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed animate-in slide-in-from-top-2 duration-300">
+                      {insight.content}
+                    </div>
+                  </details>
+                </div>
+
+                {/* Desktop: Content always visible */}
+                <style dangerouslySetInnerHTML={{
+                  __html: `
+                  @media (min-width: 768px) {
+                    .group/details summary { display: none !important; }
+                    .group/details { display: block !important; }
+                    .group/details > div { display: block !important; border: 0 !important; padding: 0 !important; margin-top: 0 !important; }
+                  }
+                `}} />
+              </div>
+            ))}
+          </div>
+          {/* Mobile Indicators */}
+          <div className="md:hidden mt-6">
+            {renderDots(3, activeInsight)}
+          </div>
+        </div>
+      </section>
+
       {/* 6. TESTIMONIALS: Simple Grid (Mobile: Horizontal Scroll) */}
-      <section className="py-12 md:py-24 bg-background-light dark:bg-background-dark border-t border-gray-100 dark:border-gray-800">
+      <section className="pt-8 md:pt-12 pb-12 md:pb-24 bg-background-light dark:bg-background-dark border-t border-gray-100 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Mobile Only 5-Star Badge - Moved from Hero */}
           <div className="flex justify-center mb-8 lg:hidden">

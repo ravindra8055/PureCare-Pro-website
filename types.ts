@@ -39,4 +39,5 @@ export interface SEOData {
   description: string;
   canonical: string;
   schema?: any;
+  hreflang?: { lang: string; href: string }[];
 }

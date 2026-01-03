@@ -11,16 +11,19 @@ const ServicePage: React.FC<{ isAreaPage?: boolean }> = ({ isAreaPage = false })
   let service, area;
 
   if (seoSlug) {
-    // Parse SEO Slug: [service-slug]-in-[area-slug]-bangalore
+    // Parse SEO Slug: [optional-best]-[service-slug]-in-[area-slug]-bangalore
     // 1. Remove '-bangalore' suffix (case insensitive)
     const withoutCity = seoSlug.replace(new RegExp(`-${PRIMARY_CITY.toLowerCase()}$`, 'i'), '');
 
-    // 2. Iterate services to find a match at the start
+    // 2. Remove 'best-' prefix if it exists
+    const canonicalSlug = withoutCity.startsWith('best-') ? withoutCity.slice(5) : withoutCity;
+
+    // 3. Iterate services to find a match at the start
     for (const s of SERVICES) {
       const prefix = `${s.slug}-in-`;
-      if (withoutCity.startsWith(prefix)) {
+      if (canonicalSlug.startsWith(prefix)) {
         service = s;
-        const areaSlugPart = withoutCity.replace(prefix, '');
+        const areaSlugPart = canonicalSlug.replace(prefix, '');
         area = AREAS.find(a => a.slug === areaSlugPart);
         break;
       }
@@ -114,7 +117,7 @@ const ServicePage: React.FC<{ isAreaPage?: boolean }> = ({ isAreaPage = false })
       {/* Description Content */}
       <section className="py-24 bg-background-light dark:bg-background-dark">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <h3 className="text-3xl font-bold mb-8 dark:text-white">Overview</h3>
+          <h2 className="text-3xl font-bold mb-8 dark:text-white">Overview</h2>
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-lg leading-relaxed">{service.longDesc}</p>
             {area && (
@@ -177,7 +180,7 @@ const ServicePage: React.FC<{ isAreaPage?: boolean }> = ({ isAreaPage = false })
       {/* Workflow Infographic */}
       <section className="py-24 bg-background-light dark:bg-background-dark">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          <h3 className="text-3xl font-bold mb-16 text-center dark:text-white">Process Execution</h3>
+          <h2 className="text-3xl font-bold mb-16 text-center dark:text-white">Process Execution</h2>
 
           <div className="relative">
             {/* Vertical Line for Desktop */}
@@ -209,13 +212,13 @@ const ServicePage: React.FC<{ isAreaPage?: boolean }> = ({ isAreaPage = false })
       {/* Do's and Don'ts */}
       <section className="py-24 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h3 className="text-3xl font-bold mb-12 text-center dark:text-white">Do's and Don'ts</h3>
+          <h2 className="text-3xl font-bold mb-12 text-center dark:text-white">Do's and Don'ts</h2>
           <div className="grid md:grid-cols-2 gap-12">
             <div className="bg-white dark:bg-black p-8 border-t-4 border-green-500 shadow-sm relative overflow-hidden">
               <div className="absolute right-0 top-0 opacity-5 text-green-500 text-9xl font-black -mr-4 -mt-4">✓</div>
-              <h4 className="text-xl font-bold mb-6 flex items-center gap-3 dark:text-white relative z-10">
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-3 dark:text-white relative z-10">
                 <span className="text-green-500 text-2xl">✓</span> What We Do
-              </h4>
+              </h3>
               <ul className="space-y-4 relative z-10">
                 {service.dos.map((item, i) => (
                   <li key={i} className="flex gap-3 text-gray-600 dark:text-gray-300 items-start">
@@ -227,9 +230,9 @@ const ServicePage: React.FC<{ isAreaPage?: boolean }> = ({ isAreaPage = false })
             </div>
             <div className="bg-white dark:bg-black p-8 border-t-4 border-red-500 shadow-sm relative overflow-hidden">
               <div className="absolute right-0 top-0 opacity-5 text-red-500 text-9xl font-black -mr-4 -mt-4">✕</div>
-              <h4 className="text-xl font-bold mb-6 flex items-center gap-3 dark:text-white relative z-10">
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-3 dark:text-white relative z-10">
                 <span className="text-red-500 text-2xl">✕</span> Important Guidelines
-              </h4>
+              </h3>
               <ul className="space-y-4 relative z-10">
                 {service.donts.map((item, i) => (
                   <li key={i} className="flex gap-3 text-gray-600 dark:text-gray-300 items-start">
@@ -246,7 +249,7 @@ const ServicePage: React.FC<{ isAreaPage?: boolean }> = ({ isAreaPage = false })
       {/* FAQs (Accordion style) */}
       <section className="py-24 bg-background-light dark:bg-background-dark">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
-          <h3 className="text-3xl font-bold mb-12 text-center dark:text-white">Queries</h3>
+          <h2 className="text-3xl font-bold mb-12 text-center dark:text-white">Queries</h2>
           <div className="space-y-4">
             {service.faqs.map((faq, i) => (
               <details key={i} className="group bg-white dark:bg-black border border-gray-200 dark:border-gray-800 open:border-blue-500 dark:open:border-blue-500 transition-colors">
@@ -284,7 +287,7 @@ const ServicePage: React.FC<{ isAreaPage?: boolean }> = ({ isAreaPage = false })
           {AREAS.map(a => (
             <Link
               key={a.slug}
-              to={`/${service.slug}-in-${a.slug}-${PRIMARY_CITY.toLowerCase()}`}
+              to={`/best-${service.slug}-in-${a.slug}-${PRIMARY_CITY.toLowerCase()}`}
               className="text-sm font-bold hover:text-blue-400 transition"
             >
               {a.name}

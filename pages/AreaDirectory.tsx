@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { AREAS, SERVICES, COMPANY_NAME, PRIMARY_CITY } from '../constants';
+import { AREAS, SERVICES, COMPANY_NAME, PRIMARY_CITY, BASE_URL } from '../constants';
 import SEOHead from '../components/SEOHead';
 
 const AreaDirectory: React.FC = () => {
@@ -13,7 +13,7 @@ const AreaDirectory: React.FC = () => {
   const seoData = {
     title: `Best Cleaning Services in ${area.name} | Expert ${COMPANY_NAME}`,
     description: `Top-rated professional cleaning services in ${area.name}, Bangalore. Tank cleaning, STP maintenance, and Deep cleaning. Book now for reliable service near ${area.landmarks[0]}.`,
-    canonical: `https://purecarepro.com/areas/${area.slug}`
+    canonical: `${BASE_URL}/areas/${area.slug}`
   };
 
   return (
@@ -39,11 +39,12 @@ const AreaDirectory: React.FC = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 -mt-12 relative z-20 pb-32">
+        <h2 className="text-3xl font-bold mb-12 text-center dark:text-white bg-white/50 dark:bg-black/50 backdrop-blur-md py-4 rounded-xl border border-white/20">Available Services in {area.name}</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {SERVICES.map(s => (
             <Link
               key={s.id}
-              to={`/${s.slug}-in-${area.slug}-${PRIMARY_CITY.toLowerCase()}`}
+              to={`/best-${s.slug}-in-${area.slug}-${PRIMARY_CITY.toLowerCase()}`}
               className="group bg-white dark:bg-surface-dark p-10 border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <div className="flex justify-between items-start mb-8">

@@ -1,15 +1,54 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SERVICES, AREAS, PRIMARY_CITY, COMPANY_NAME, PHONE_NUMBER, CLIENTS } from '../constants';
+import { SERVICES, AREAS, PRIMARY_CITY, COMPANY_NAME, PHONE_NUMBER, CLIENTS, BASE_URL } from '../constants';
 import SEOHead from '../components/SEOHead';
 
 const Home: React.FC = () => {
   // SEO Data
   const seoData = {
-    title: `${COMPANY_NAME} | Best Cleaning Services in ${PRIMARY_CITY} | Tank, STP & Deep Cleaning`,
-    description: `${COMPANY_NAME} offers professional Water Tank Cleaning, STP Maintenance, and Home Deep Cleaning in ${PRIMARY_CITY}. 25+ Years Experience. Trusted by 10k+ Clients.`,
-    canonical: `https://purecarepro.com/`
+    title: `${COMPANY_NAME} | Best Cleaning Services in ${PRIMARY_CITY}`,
+    description: `Expert Water Tank Cleaning, STP Maintenance & Deep Cleaning in ${PRIMARY_CITY}. 25+ Yrs Exp. Trusted by 10k+ Clients.`,
+    canonical: BASE_URL,
+    hreflang: [
+      { lang: 'en-in', href: BASE_URL },
+      { lang: 'x-default', href: BASE_URL }
+    ],
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": COMPANY_NAME,
+      "image": `${BASE_URL}/images/hero-image.png`,
+      "@id": BASE_URL,
+      "url": BASE_URL,
+      "telephone": PHONE_NUMBER,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "207, 4th Cross, 2nd Main, 2nd Stage, Nagarabhavi",
+        "addressLocality": PRIMARY_CITY,
+        "postalCode": "560072",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 12.9716,
+        "longitude": 77.5946
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
+    }
   };
 
   // Generic Features for the 6-Grid Section
@@ -107,7 +146,7 @@ const Home: React.FC = () => {
                 Professional Cleaning Services
               </div>
               <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-8 text-gray-900 dark:text-white uppercase">
-                Master <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hygiene</span>
+                Best Cleaning <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Services</span> in {PRIMARY_CITY}
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-10 max-w-lg">
                 Expert Water Tank Cleaning, STP Maintenance, and Deep Cleaning solutions for modern living in {PRIMARY_CITY}.
@@ -128,7 +167,7 @@ const Home: React.FC = () => {
             <div className="hidden lg:block relative h-[500px] w-full bg-gray-100 dark:bg-gray-800 rounded-[3rem] overflow-hidden shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-700">
               <img
                 src="images/hero-image.png"
-                alt="Professional Cleaning"
+                alt="Professional cleaning team providing deep cleaning services in Bangalore"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -269,7 +308,7 @@ const Home: React.FC = () => {
             {SERVICES.map((service, i) => (
               <div key={i} className="group relative bg-surface-light dark:bg-surface-dark rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow duration-500">
                 <div className="h-64 overflow-hidden">
-                  <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src={service.image} alt={`Professional ${service.name} service - Hygienic Cleaning Services`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
                 <div className="p-8 relative">
                   {/* Floating Number */}
@@ -315,6 +354,30 @@ const Home: React.FC = () => {
             ))}
           </div>
           {renderDots(FEATURES.length, activeFeature)}
+        </div>
+      </section>
+
+      {/* 5.5 PROFESSIONAL INSIGHTS: Deep Content for SEO */}
+      <section className="py-12 md:py-24 bg-white dark:bg-black">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+          <h2 className="text-3xl font-bold mb-8 dark:text-white border-l-4 border-blue-600 pl-4">Expert Cleaning Solutions for {PRIMARY_CITY}'s Urban Living</h2>
+          <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-400 leading-relaxed space-y-6">
+            <p>
+              In the rapidly growing landscape of {PRIMARY_CITY}, maintaining a hygienic environment for your home or business is no longer a luxury—it's a necessity. At <strong>{COMPANY_NAME}</strong>, we've spent over 25 years perfecting our mechanized cleaning processes to tackle the unique challenges of urban sanitation. Whether you're managing a corporate facility or a residential apartment, our scientifically-backed methods ensure that your water sources and living spaces remain bacteria-free and safe.
+            </p>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Why Mechanized Water Tank Cleaning Matters</h3>
+            <p>
+              Conventional tank cleaning often involves manual scrubbing with minimal equipment, which fails to remove microscopic bio-films and hardened sludge. Our 6-stage mechanized process involves high-pressure jetting and UV radiation, ensuring that every corner of your sump or overhead tank is sterilized. This process is essential in {PRIMARY_CITY} where groundwater quality can vary, preventing diseases like cholera and jaundice before they start.
+            </p>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Precision STP Maintenance and Sewage Management</h3>
+            <p>
+              For commercial complexes and large residential societies, Sewage Treatment Plants (STP) are the heart of their sustainability efforts. Improper maintenance can lead to foul odors, equipment failure, and environmental penalties. Our experts specialize in the mechanical and biological upkeep of STPs, ensuring treated water meets all regulatory standards while prolonging the lifespan of your mechanical hardware.
+            </p>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Deep Cleaning Redefined</h3>
+            <p>
+              Our home and office deep cleaning services go far beyond the surface. We utilize industrial-grade vacuum cleaners and biodegradable cleaning agents to sanitize high-touch areas, carpets, and upholstery. By focusing on allergen removal and deep disinfection, we transform your space into a pristine haven that improves indoor air quality and overall productivity.
+            </p>
+          </div>
         </div>
       </section>
 

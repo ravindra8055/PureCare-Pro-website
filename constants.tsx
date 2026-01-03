@@ -4,6 +4,7 @@ import { ServiceInfo, AreaInfo, Client } from './types';
 
 export const COMPANY_NAME = "Hygienic Cleaning Services";
 export const PRIMARY_CITY = "Bangalore";
+export const BASE_URL = "https://ravindra8055-purecare-pro.hf.space";
 export const PHONE_NUMBER = "+91 99866 55556";
 export const PHONE_NUMBER_2 = "+91 97395 60560";
 export const WHATSAPP_NUMBER = "919986655556";
